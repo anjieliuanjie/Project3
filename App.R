@@ -13,6 +13,7 @@ ui <- fluidPage(
   (
     sidebarPanel
     (
+      helpText("Select a variable to see its distribution"),
       selectInput
       (
         "selectvar", 
@@ -20,6 +21,7 @@ ui <- fluidPage(
         choices = list("Sales" = 1, "DollarVolume" = 2, "AveragePrice" = 3, "MedianPrice" = 4, "Area" = 5),
         selected = 1
       ),
+      helpText("Select a color of the graph."),
       selectInput
       (
         "selectColor", 
@@ -27,6 +29,7 @@ ui <- fluidPage(
         choices = list("Pink" = 1, "Dark olive green" = 2, "Beige" = 3, "Khaki" = 4, "Sky blue" = 5),
         selected = 1
       ),
+      helpText("Drag to change the number of bins of the graph."),
       sliderInput
       (
         "bins",
@@ -34,14 +37,20 @@ ui <- fluidPage(
         min = 1,
         max = 50,
         value = 30
+      ),
+      helpText("Drag to see how the graph of a variable changes as the number of sales changes"),
+      sliderInput
+      (
+        "sales",
+        "Number of sales:",
+        min = min(Project2[,3]),
+        max = max(Project2[,3]),
+        value = max(Project2[,3])
       )
     ),
     mainPanel
     (
-      #fluidPage(img(src = 'D:\\MyCodes\\MyRStudio\\SDS 313 Introduction to Data Science\\Week 15 1128-1202\\710 S Fry Road Katy 77450.jpg', height = '100px', width = '100px')),
-      
-      #img(src = "710 S Fry Road Katy 77450.jpg"),
-      
+      helpText("This Shiny App displays the univariable distributions of variables regarding real estate data collected from Houston and Austin area. It will also display the statistics of the variable selected."),
       img(src = "710 S Fry Road Katy 77450.jpg", height = 140, width = 240),
       
       plotOutput("distPlot"),
@@ -102,6 +111,7 @@ server <- function(input, output)
   output$distPlot <- renderPlot(
     {
       col = colorChoice(input$selectColor)
+      Project2 <- Project2[Project2$Sales <= input$sales,]
       if(input$selectvar == 1)
       {
         createHistogram(Project2$Sales,
