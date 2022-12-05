@@ -14,14 +14,16 @@ ui <- fluidPage(
     sidebarPanel
     (
       helpText("Select a variable to see its distribution"),
+      div(style = "margin-top: -20px"),
       selectInput
       (
         "selectvar", 
         label = h3("Choose a variable"),
-        choices = list("Sales" = 1, "DollarVolume" = 2, "AveragePrice" = 3, "MedianPrice" = 4, "Area" = 5),
+        choices = list("Sales" = 1, "Dollar Volume" = 2, "Average Price" = 3, "Median Price" = 4, "Area" = 5),
         selected = 1
       ),
       helpText("Select a color of the graph."),
+      div(style = "margin-top: -20px"),
       selectInput
       (
         "selectColor", 
@@ -30,15 +32,17 @@ ui <- fluidPage(
         selected = 1
       ),
       helpText("Drag to change the number of bins of the graph."),
+      div(style = "margin-top: -10px"),
       sliderInput
       (
         "bins",
-        "Number of bins:",
+        ("Number of bins:"),
         min = 1,
         max = 50,
         value = 30
       ),
       helpText("Drag to see how the graph of a variable changes as the number of sales changes"),
+      div(style = "margin-top: -10px"),
       sliderInput
       (
         "sales",
@@ -50,11 +54,14 @@ ui <- fluidPage(
     ),
     mainPanel
     (
-      helpText("This Shiny App displays the univariable distributions of variables regarding real estate data collected from Houston and Austin area. It will also display the statistics of the variable selected."),
-      img(src = "710 S Fry Road Katy 77450.jpg", height = 140, width = 240),
-      
+      fixedRow(
+        column(6,helpText("This Shiny App displays the univariable distributions of variables regarding real estate data collected from Houston and Austin area from 1990 to 2021. It will also display the statistics of the variable selected.")),
+        column(6, div(img(img(src = "710 S Fry Road Katy 77450.jpg", height = 110, width = 190)), style="text-align: center;"))
+      ),
+
       plotOutput("distPlot"),
-      fluidRow(column(6, verbatimTextOutput("stats")))
+      fluidRow(
+        column(6, verbatimTextOutput("stats")))
       
     )
   )
